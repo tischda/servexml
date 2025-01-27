@@ -1,6 +1,6 @@
 # servexml [![Build status](https://ci.appveyor.com/api/projects/status/toidj9bpnna2542w?svg=true)](https://ci.appveyor.com/project/tischda/servexml)
 
-servexml starts a dummy xml web server to allow mclupdater.exe to work.
+servexml starts a web server that returns dummy XML content for mclupdater.exe to work.
 
 ### Install
 
