@@ -1,28 +1,32 @@
-# servexml [![Build status](https://ci.appveyor.com/api/projects/status/toidj9bpnna2542w?svg=true)](https://ci.appveyor.com/project/tischda/servexml)
+[![Build Status](https://github.com/tischda/servexml/actions/workflows/build.yml/badge.svg)](https://github.com/tischda/servexml/actions/workflows/build.yml)
+[![Test Status](https://github.com/tischda/servexml/actions/workflows/test.yml/badge.svg)](https://github.com/tischda/servexml/actions/workflows/test.yml)
+[![Go Report Card](https://goreportcard.com/badge/github.com/tischda/servexml)](https://goreportcard.com/report/github.com/tischda/servexml)
 
-servexml starts a web server that returns dummy XML content for mclupdater.exe to work.
+# servexml
+
+Starts a web server that returns dummy XML content for `mclupdater.exe` to work.
 
 ### Install
 
 ~~~
-go get github.com/tischda/servexml
+go install github.com/tischda/servexml@latest
 ~~~
 
 ### Usage
 
-you need to update MCL settings to activate automatic logo updates
+You need to update MCL settings to activate automatic logo updates.
 
-you need to add this to your hosts file:
+You need to add this to your hosts file:
 ```
 127.0.0.1    files.mychannellogos.com
 ```
 
-to start the server:
+To start the server:
 ```
 servexml.exe
 ```
 
-to stop the server
+To stop the server:
 ```
 curl http://localhost/?SHUTDOWN=true
 ```
