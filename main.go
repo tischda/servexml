@@ -4,71 +4,82 @@ import (
 	"flag"
 	"fmt"
 	"log"
-	"net/http"
+	"os"
 )
 
-// go build -ldflags=all="-X main.version=${BUILD_TAG} -s -w"
-var version string
-var showVersion bool
-var maxRequests int
-var numRequests int
+// https://goreleaser.com/cookbooks/using-main.version/
+var (
+	name    string
+	version string
+	date    string
+	commit  string
+)
+
+// flags
+type Config struct {
+	requests int
+	port     int
+	help     bool
+	version  bool
+}
+
+func initFlags() *Config {
+	cfg := &Config{}
+	flag.IntVar(&cfg.requests, "r", 0, "")
+	flag.IntVar(&cfg.requests, "requests", 0, "number of requests before shutdown")
+	flag.IntVar(&cfg.port, "p", 80, "")
+	flag.IntVar(&cfg.port, "port", 80, "port number to listen on")
+	flag.BoolVar(&cfg.help, "?", false, "")
+	flag.BoolVar(&cfg.help, "help", false, "displays this help message")
+	flag.BoolVar(&cfg.version, "v", false, "")
+	flag.BoolVar(&cfg.version, "version", false, "print version and exit")
+	return cfg
+}
 
 const SHUTDOWN_REQUEST = "Shutdown request received. Stopping server..."
 const REQUEST_LIMIT_REACHED = "Request limit reached. Stopping server..."
 
 var shutdownChan = make(chan bool)
 
-func init() {
-	flag.BoolVar(&showVersion, "version", false, "print version and exit")
-	flag.IntVar(&maxRequests, "requests", 0, "number of requests before shutdown")
-}
-
 func main() {
-	flag.Parse()
-	if showVersion {
-		fmt.Println("servexml version", version)
-	} else {
-		serve()
+	log.SetFlags(0)
+	cfg := initFlags()
+	flag.Usage = func() {
+		fmt.Fprintln(os.Stderr, "Usage: "+name+` [OPTIONS]
+
+Starts a web server that returns dummy XML content.
+
+OPTIONS:
+
+  -r, --requests int (mandatory)
+        number of requests before shutdown
+  -p, --port int (default: 80)
+        port number to listen on
+  -?, --help
+        display this help message
+  -v, --version
+        print version and exit
+
+EXAMPLES:`)
+
+		fmt.Fprintln(os.Stderr, "\n  $ "+name+` --requests 2 --port 8080
+  Starting server on :8080`)
 	}
-}
+	flag.Parse()
 
-// Starts a web server that returns dummy XML content for mclupdater.exe to work.
-// Stop the server with `curl localhost?SHUTDOWN=true` or set a request limit
-func serve() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Query().Get("SHUTDOWN") == "true" {
-			log.Println(SHUTDOWN_REQUEST)
-			w.WriteHeader(http.StatusOK)
-			_, _ = w.Write([]byte(SHUTDOWN_REQUEST))
-			shutdownChan <- true
-			return
-		}
-		// Set response header
-		w.Header().Set("Content-Type", "application/xml")
-		w.WriteHeader(http.StatusOK)
+	if flag.Arg(0) == "version" || cfg.version {
+		fmt.Printf("%s %s, built on %s (commit: %s)\n", name, version, date, commit)
+		return
+	}
 
-		// Write an empty XML document
-		_, err := w.Write([]byte("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<root></root>"))
-		if err != nil {
-			log.Printf("Error writing response: %v", err)
-		}
+	if cfg.help {
+		flag.Usage()
+		return
+	}
 
-		if maxRequests > 0 {
-			numRequests++
-			if numRequests >= maxRequests {
-				log.Println(REQUEST_LIMIT_REACHED)
-				shutdownChan <- true
-			}
-		}
-	})
-
-	go func() {
-		log.Println("Starting server on :80")
-		if err := http.ListenAndServe(":80", nil); err != nil {
-			log.Fatalf("Server failed to start: %v", err)
-		}
-	}()
-
-	<-shutdownChan
-	log.Println("Server has been stopped.")
+	if len(os.Args) < 2 {
+		flag.Usage()
+		os.Exit(1)
+	}
+	serve(cfg)
 }

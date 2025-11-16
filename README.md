@@ -1,18 +1,44 @@
 [![Build Status](https://github.com/tischda/servexml/actions/workflows/build.yml/badge.svg)](https://github.com/tischda/servexml/actions/workflows/build.yml)
 [![Test Status](https://github.com/tischda/servexml/actions/workflows/test.yml/badge.svg)](https://github.com/tischda/servexml/actions/workflows/test.yml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/tischda/servexml)](https://goreportcard.com/report/github.com/tischda/servexml)
+[![Coverage Status](https://coveralls.io/repos/tischda/servexml/badge.svg)](https://coveralls.io/r/tischda/servexml)
+[![Linter Status](https://github.com/tischda/servexml/actions/workflows/linter.yml/badge.svg)](https://github.com/tischda/servexml/actions/workflows/linter.yml)
+[![License](https://img.shields.io/github/license/tischda/servexml)](/LICENSE)
+[![Release](https://img.shields.io/github/release/tischda/servexml.svg)](https://github.com/tischda/servexml/releases/latest)
 
 # servexml
 
 Starts a web server that returns dummy XML content for `mclupdater.exe` to work.
+My Channel Logos (MCL) updates channel logos for Windows Media Center.
 
-### Install
+## Install
 
 ~~~
 go install github.com/tischda/servexml@latest
 ~~~
 
-### Usage
+## Usage
+
+```
+Usage: servexml [OPTIONS]
+
+Starts a web server that returns dummy XML content.
+
+OPTIONS:
+
+  -r, --requests int (mandatory)
+        number of requests before shutdown
+  -?, --help
+        display this help message
+  -v, --version
+        print version and exit
+
+EXAMPLES:
+
+  $ servexml --requests 2
+  Starting server on :80
+```
+
+## Configuration
 
 You need to update MCL settings to activate automatic logo updates.
 
@@ -23,7 +49,7 @@ You need to add this to your hosts file:
 
 To start the server:
 ```
-servexml.exe
+servexml.exe --requests 2
 ```
 
 To stop the server:
