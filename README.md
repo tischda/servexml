@@ -27,6 +27,8 @@ OPTIONS:
 
   -r, --requests int (mandatory)
         number of requests before shutdown
+  -p, --port int (default: 80)
+        port number to listen on
   -?, --help
         display this help message
   -v, --version
@@ -34,8 +36,8 @@ OPTIONS:
 
 EXAMPLES:
 
-  $ servexml --requests 2
-  Starting server on :80
+  $ servexml --requests 2 --port 8080
+  Starting server on :8080
 ```
 
 ## Configuration
