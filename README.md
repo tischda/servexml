@@ -2,7 +2,7 @@
 [![Test Status](https://github.com/tischda/servexml/actions/workflows/test.yml/badge.svg)](https://github.com/tischda/servexml/actions/workflows/test.yml)
 [![Coverage Status](https://coveralls.io/repos/tischda/servexml/badge.svg)](https://coveralls.io/r/tischda/servexml)
 [![Linter Status](https://github.com/tischda/servexml/actions/workflows/linter.yml/badge.svg)](https://github.com/tischda/servexml/actions/workflows/linter.yml)
-[![License](https://img.shields.io/github/license/tischda/servexml)](/LICENSE)
+[![License](https://img.shields.io/github/license/tischda/servexml.svg)](/LICENSE)
 [![Release](https://img.shields.io/github/release/tischda/servexml.svg)](https://github.com/tischda/servexml/releases/latest)
 
 # servexml
