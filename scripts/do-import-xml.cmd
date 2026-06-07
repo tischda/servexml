@@ -29,8 +29,9 @@ set __START_MCE_IMPORT__=%time%
 :: ---------------------------------------------------------------------------
 :: Import
 :: ---------------------------------------------------------------------------
-echo Removing special characters >> %LOG%
+echo Cleaning up XML (special characters, etc.) >> %LOG%
 sed -i 's///g' xmltv.xml
+sed -i -r "s#(<category[^>]*>).*?&gt;([^<]+)&lt;/a&gt;.*</category>#\1\2</category>#" xmltv.xml
 sed -i "s/&amp;#039;/'/g" xmltv.xml
 echo.
 echo Importing file >> %LOG%
